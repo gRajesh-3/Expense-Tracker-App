@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Wallet</string>
+    <string-array name="categories">
+        <item>Personal care</item>
+        <item>Groceries</item>
+        <item>Clothing</item>
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Fuel</item>
+    </string-array>
+</resources>

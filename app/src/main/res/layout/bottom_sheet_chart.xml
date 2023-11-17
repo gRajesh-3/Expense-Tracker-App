@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_background"
+    android:padding="@dimen/large_space">
+
+    <TextView
+        android:id="@+id/chartHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pie Chart for Expenses"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <org.eazegraph.lib.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        app:layout_constraintBottom_toBottomOf="@+id/cLayout"
+        app:layout_constraintEnd_toStartOf="@+id/cLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chartHeader" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_space"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chartHeader"
+        app:layout_constraintWidth_percent="0.40">
+
+        <LinearLayout
+            android:id="@+id/layoutPC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@id/cLayout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@color/red" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Personal care" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@id/cLayout"
+            app:layout_constraintTop_toBottomOf="@id/layoutPC">
+
+            <View
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@color/green" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Groceries" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@id/cLayout"
+            app:layout_constraintTop_toBottomOf="@id/layoutG">
+
+            <View
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@color/blue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Clothing" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@id/cLayout"
+            app:layout_constraintTop_toBottomOf="@id/layoutC">
+
+            <View
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@color/purple" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Food" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@id/cLayout"
+            app:layout_constraintTop_toBottomOf="@id/layoutF">
+
+            <View
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@color/pink" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Entertainment" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutFuel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@id/cLayout"
+            app:layout_constraintTop_toBottomOf="@id/layoutE">
+
+            <View
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@color/orange" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Fuel" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
