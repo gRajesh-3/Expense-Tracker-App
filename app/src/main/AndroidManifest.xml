@@ -16,7 +16,7 @@
             android:name=".view.newexpense.NewExpenseActivity"
             android:exported="false" />
         <activity
-            android:name=".view.home.ExpenseActivity"
+            android:name=".view.expenses.ExpensesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

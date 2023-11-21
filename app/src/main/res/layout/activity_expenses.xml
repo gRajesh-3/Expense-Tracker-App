@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     style="@style/SCREEN"
     android:padding="@dimen/large_space"
-    tools:context=".view.home.ExpenseActivity">
+    tools:context=".view.expenses.ExpensesActivity">
 
     <TextView
         android:id="@+id/profileIcon"
@@ -15,7 +15,7 @@
         android:background="@drawable/rounded_background"
         android:paddingHorizontal="14dp"
         android:paddingVertical="8dp"
-        android:text="R"
+        android:text="G"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Hello there"
+        android:text="Hello Guest"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/profileIcon"
@@ -118,17 +118,6 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/ic_search"
-        android:background="@color/white"
-        android:layout_marginRight="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvTransactions"
-        app:layout_constraintEnd_toStartOf="@+id/ibChartIcon"
-        app:layout_constraintTop_toTopOf="@+id/tvTransactions" />
-
-    <ImageButton
-        android:id="@+id/ibChartIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_chart"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/tvTransactions"
         app:layout_constraintEnd_toEndOf="parent"

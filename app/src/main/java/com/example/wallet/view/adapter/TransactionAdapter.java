@@ -4,24 +4,25 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wallet.R;
-import com.example.wallet.model.Expense;
-import com.example.wallet.model.Section;
+import com.example.wallet.helper.OnItemClickListener;
+import com.example.wallet.model.ExpenseModel;
 
 import java.util.List;
 
+import kotlin.Pair;
+
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
-    List<Section> sections;
+    List<Pair<String, List<ExpenseModel>>> sections;
     Context context;
     private OnItemClickListener onItemClickListener;
 
-    public TransactionAdapter(List<Section> sections, Context context, OnItemClickListener onItemClickListener) {
+    public TransactionAdapter(List<Pair<String, List<ExpenseModel>>> sections, Context context, OnItemClickListener onItemClickListener) {
         this.sections = sections;
         this.context = context;
         this.onItemClickListener = onItemClickListener;
@@ -37,12 +38,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
-        Section section = sections.get(position);
-        String sectionName = section.getSectionName();
-        List<Expense> sectionExpenses = section.getExpenses();
+        Pair<String, List<ExpenseModel>> section = sections.get(position);
+        String sectionName = section.getFirst();
+        List<ExpenseModel> sectionExpenses = section.getSecond();
 
         holder.tvSectionHeader.setText(sectionName);
-        SectionAdapter sectionAdapter = new SectionAdapter(section.getId(), sectionExpenses, context, onItemClickListener);
+        holder.tvSectionPrice.setText(getSectionExpense(sectionExpenses));
+        SectionAdapter sectionAdapter = new SectionAdapter(sectionName, sectionExpenses, context, onItemClickListener);
         holder.rvSection.setAdapter(sectionAdapter);
     }
 
@@ -53,11 +55,19 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     class TransactionViewHolder extends RecyclerView.ViewHolder {
         TextView tvSectionHeader;
+        TextView tvSectionPrice;
         RecyclerView rvSection;
         public TransactionViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSectionHeader = itemView.findViewById(R.id.tvSectionHeader);
+            tvSectionPrice = itemView.findViewById(R.id.tvSectionPrice);
             rvSection = itemView.findViewById(R.id.rvSection);
         }
+    }
+
+    private String getSectionExpense(List<ExpenseModel> section) {
+        Double expenseAmount = 0.0;
+        for (ExpenseModel expense: section) { expenseAmount += expense.getAmount(); }
+        return "₹"+expenseAmount;
     }
 }

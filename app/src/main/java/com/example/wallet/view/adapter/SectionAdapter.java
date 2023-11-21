@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,18 +11,19 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wallet.R;
-import com.example.wallet.model.Expense;
+import com.example.wallet.helper.OnItemClickListener;
+import com.example.wallet.model.ExpenseModel;
 
 import java.util.List;
 
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionViewHolder> {
-    String sectionId;
-    List<Expense> expenses;
+    String sectionName;
+    List<ExpenseModel> expenses;
     Context context;
     OnItemClickListener onItemClickListener;
 
-    public SectionAdapter(String sectionId, List<Expense> expenses, Context context, OnItemClickListener onItemClickListener) {
-        this.sectionId = sectionId;
+    public SectionAdapter(String sectionName, List<ExpenseModel> expenses, Context context, OnItemClickListener onItemClickListener) {
+        this.sectionName = sectionName;
         this.expenses = expenses;
         this.context = context;
         this.onItemClickListener = onItemClickListener;
@@ -39,16 +39,15 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
 
     @Override
     public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
-        Expense expense = expenses.get(position);
-        holder.tvItemDesc.setText(expense.getDesc());
+        ExpenseModel expense = expenses.get(position);
+        holder.tvItemDesc.setText(expense.getDescription());
         holder.tvItemCategory.setText(expense.getCategory());
         holder.tvItemCategory.setTextColor(expense.getColor(context));
-        holder.tvItemAmount.setText(expense.getAmount().toString());
+        holder.tvItemAmount.setText("₹"+expense.getAmount());
     }
 
     @Override
     public int getItemCount() {
-        System.out.println(expenses.size());
         return expenses.size();
     }
 
@@ -68,7 +67,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
             item.setOnClickListener(v -> {
                 int position = getAbsoluteAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && onItemClickListener != null) {
-                    onItemClickListener.onItemClick(sectionId, expenses.get(position).getId());
+                    onItemClickListener.onItemClick(expenses.get(position));
                 }
             });
         }

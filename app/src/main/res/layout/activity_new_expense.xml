@@ -80,6 +80,7 @@
         android:background="@drawable/textfield_background"
         android:hint="Fastrack Watch"
         android:padding="16dp"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
@@ -101,7 +102,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/spinner_background"
-        android:padding="16dp"
+        android:paddingVertical="@dimen/large_space"
+        android:paddingHorizontal="8dp"
         android:entries="@array/categories"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/date_background"
-        android:hint="23 Nov, 2023"
+        android:hint="21-11-2023"
         android:padding="16dp"
         android:clickable="false"
         android:focusable="false"
@@ -135,6 +137,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_space"
+        android:text="Time"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDate" />
+
+    <EditText
+        android:id="@+id/etTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/time_background"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:hint="09:35"
+        android:padding="@dimen/large_space"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTime" />
+
     <Button
         android:id="@+id/btnAddExpense"
         android:layout_width="match_parent"
@@ -144,6 +173,6 @@
         android:layout_marginTop="@dimen/large_space"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDate" />
+        app:layout_constraintTop_toBottomOf="@+id/etTime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

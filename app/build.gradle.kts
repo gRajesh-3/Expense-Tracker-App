@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.wallet"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -43,7 +43,15 @@ dependencies {
     // Recycler view
     implementation("androidx.recyclerview:recyclerview:1.3.2")
 
-    // Chart
-    implementation("com.github.blackfizz:eazegraph:1.2.5l@aar")
-    implementation("com.nineoldandroids:library:2.4.0")
+    // ROOM
+    implementation("androidx.room:room-runtime:2.6.0")
+    annotationProcessor("androidx.room:room-compiler:2.6.0")
+    implementation("androidx.room:room-rxjava3:2.6.0")
+
+    // RxJava
+    implementation("io.reactivex.rxjava3:rxjava:3.1.5")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 }
