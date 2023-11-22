@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.wallet.model.ExpenseModel;
+import com.example.wallet.model.Expense;
 
 import java.util.List;
 
@@ -14,21 +14,21 @@ import io.reactivex.rxjava3.core.Flowable;
 
 @Dao
 public interface ExpenseDao {
-    @Query("SELECT * FROM expense ORDER BY createdAt DESC")
-    Flowable<List<ExpenseModel>> getAllExpenses();
+    @Query("SELECT * FROM Expense ORDER BY createdAt DESC")
+    Flowable<List<Expense>> getAllExpenses();
 
-    @Query("SELECT * FROM expense WHERE id = :expenseId")
-    Flowable<ExpenseModel> getExpense(int expenseId);
+    @Query("SELECT * FROM Expense WHERE id = :expenseId")
+    Flowable<Expense> getExpense(int expenseId);
 
-    @Query("SELECT SUM(amount) from expense")
+    @Query("SELECT SUM(amount) from Expense")
     Flowable<Double> getTotalExpense();
 
     @Insert
-    void insert(ExpenseModel expense);
+    void insert(Expense expense);
 
     @Update
-    void update(ExpenseModel expense);
+    void update(Expense expense);
 
     @Delete
-    void delete(ExpenseModel expense);
+    void delete(Expense expense);
 }

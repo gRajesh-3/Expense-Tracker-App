@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,26 +25,22 @@ import com.example.wallet.helper.Helper;
 import com.example.wallet.helper.ViewModelFactory;
 import com.example.wallet.model.BottomSheet;
 import com.example.wallet.model.Constant;
-import com.example.wallet.model.ExpenseModel;
+import com.example.wallet.model.Expense;
 import com.example.wallet.view.adapter.TransactionAdapter;
 import com.example.wallet.view.newexpense.NewExpenseActivity;
-
-import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import kotlin.Pair;
 
 public class ExpensesActivity extends AppCompatActivity {
-    private final String TAG = "My ExpenseActivity";
     SharedPreferences sharedPreferences;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ExpensesViewModel expensesViewModel;
     TextView profileIcon, tvName;
     private RecyclerView rvTransaction;
-    private ExpenseModel tappedExpense;
+    private Expense tappedExpense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

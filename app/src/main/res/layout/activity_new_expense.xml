@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/textfield_background"
-        android:hint="Fastrack Watch"
+        android:hint="Sonata Watch"
         android:padding="16dp"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"

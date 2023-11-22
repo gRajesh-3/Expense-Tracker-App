@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.wallet.model.ExpenseModel;
+import com.example.wallet.model.Expense;
 import com.example.wallet.repository.ExpenseRepository;
 
 import java.util.Objects;
@@ -24,15 +24,15 @@ public class NewExpenseViewModel extends ViewModel {
     public NewExpenseViewModel(Context context) {
         expenseRepository = new ExpenseRepository(context);
     }
-    public Flowable<ExpenseModel> getExpense(int expenseId) { return expenseRepository.getExpense(expenseId); }
-    public void insertExpense(ExpenseModel expense) {
+    public Flowable<Expense> getExpense(int expenseId) { return expenseRepository.getExpense(expenseId); }
+    public void insertExpense(Expense expense) {
         expenseRepository.insertExpense(expense);
     }
-    public void updateExpense(ExpenseModel expense) {
+    public void updateExpense(Expense expense) {
         expenseRepository.updateExpense(expense);
     }
     public void setEtAmount(String amount) {
-        Double amountInDouble = 0.0;
+        double amountInDouble = 0.0;
         if (!Objects.equals(amount, "")) {
             amountInDouble = Double.parseDouble(amount);
         }

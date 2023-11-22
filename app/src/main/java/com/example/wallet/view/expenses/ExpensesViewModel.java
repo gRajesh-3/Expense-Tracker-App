@@ -2,23 +2,17 @@ package com.example.wallet.view.expenses;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.wallet.model.BottomSheet;
-import com.example.wallet.model.ExpenseModel;
+import com.example.wallet.model.Expense;
 import com.example.wallet.repository.ExpenseRepository;
-import com.example.wallet.view.adapter.TransactionAdapter;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,16 +25,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.Pair;
 
 public class ExpensesViewModel extends ViewModel {
     private final ExpenseRepository expenseRepository;
-    private MutableLiveData<List<ExpenseModel>> expenses = new MutableLiveData<>();
-    public MutableLiveData<List<Pair<String, List<ExpenseModel>>>> filteredExpenses = new MutableLiveData<>();
-    private MutableLiveData<String> searchKey = new MutableLiveData<>("");
+    private final MutableLiveData<List<Expense>> expenses = new MutableLiveData<>();
+    public MutableLiveData<List<Pair<String, List<Expense>>>> filteredExpenses = new MutableLiveData<>();
+    private final MutableLiveData<String> searchKey = new MutableLiveData<>("");
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public ExpensesViewModel(Context context) {
@@ -70,7 +62,7 @@ public class ExpensesViewModel extends ViewModel {
     }
 
     private void filterExpenses() {
-        List<ExpenseModel> newExpenses = expenses.getValue();
+        List<Expense> newExpenses = expenses.getValue();
         if (!Objects.equals(searchKey.getValue(), "")) {
             newExpenses = newExpenses.stream()
                     .filter(obj -> obj.getDescription().toLowerCase().contains(searchKey.getValue().toLowerCase()) ||
@@ -82,15 +74,15 @@ public class ExpensesViewModel extends ViewModel {
 
     public Flowable<Double> getTotalExpense() { return expenseRepository.getTotalExpense(); }
 
-    public void deleteExpense(ExpenseModel expense) {
+    public void deleteExpense(Expense expense) {
         expenseRepository.deleteExpense(expense);
     }
 
-    public List<Pair<String, List<ExpenseModel>>> convertToSections(List<ExpenseModel> expenses) {
-        List<Pair<String, ExpenseModel>> pairs = new ArrayList<>();
+    public List<Pair<String, List<Expense>>> convertToSections(List<Expense> expenses) {
+        List<Pair<String, Expense>> pairs = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
 
-        for (ExpenseModel expense: expenses) {
+        for (Expense expense: expenses) {
             LocalDateTime localDateTime = expense.getCreatedAt();
             Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
             Date d = Date.from(instant);
@@ -98,8 +90,8 @@ public class ExpensesViewModel extends ViewModel {
             pairs.add(new Pair<>(date, expense));
         }
 
-        Map<String, List<ExpenseModel>> groups = new HashMap<>();
-        for (Pair<String, ExpenseModel> pair: pairs) {
+        Map<String, List<Expense>> groups = new HashMap<>();
+        for (Pair<String, Expense> pair: pairs) {
             String date = pair.getFirst();
             if (!groups.containsKey(date)) {
                 groups.put(date, new ArrayList<>());
@@ -107,10 +99,10 @@ public class ExpensesViewModel extends ViewModel {
             Objects.requireNonNull(groups.get(date)).add(pair.getSecond());
         }
 
-        List<Pair<String, List<ExpenseModel>>> sections = new ArrayList<>();
-        for (Map.Entry<String, List<ExpenseModel>> entry: groups.entrySet()) {
+        List<Pair<String, List<Expense>>> sections = new ArrayList<>();
+        for (Map.Entry<String, List<Expense>> entry: groups.entrySet()) {
             String date = entry.getKey();
-            List<ExpenseModel> expenseList = entry.getValue();
+            List<Expense> expenseList = entry.getValue();
 
             if (date != null && expenseList != null) {
                 sections.add(new Pair<>(date, expenseList));

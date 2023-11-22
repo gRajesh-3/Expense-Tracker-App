@@ -12,17 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wallet.R;
 import com.example.wallet.helper.OnItemClickListener;
-import com.example.wallet.model.ExpenseModel;
+import com.example.wallet.model.Expense;
 
 import java.util.List;
 
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionViewHolder> {
     String sectionName;
-    List<ExpenseModel> expenses;
+    List<Expense> expenses;
     Context context;
     OnItemClickListener onItemClickListener;
 
-    public SectionAdapter(String sectionName, List<ExpenseModel> expenses, Context context, OnItemClickListener onItemClickListener) {
+    public SectionAdapter(String sectionName, List<Expense> expenses, Context context, OnItemClickListener onItemClickListener) {
         this.sectionName = sectionName;
         this.expenses = expenses;
         this.context = context;
@@ -39,7 +39,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
 
     @Override
     public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
-        ExpenseModel expense = expenses.get(position);
+        Expense expense = expenses.get(position);
         holder.tvItemDesc.setText(expense.getDescription());
         holder.tvItemCategory.setText(expense.getCategory());
         holder.tvItemCategory.setTextColor(expense.getColor(context));

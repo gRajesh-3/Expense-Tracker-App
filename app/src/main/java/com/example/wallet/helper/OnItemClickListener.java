@@ -1,7 +1,7 @@
 package com.example.wallet.helper;
 
-import com.example.wallet.model.ExpenseModel;
+import com.example.wallet.model.Expense;
 
 public interface OnItemClickListener {
-    void onItemClick(ExpenseModel expense);
+    void onItemClick(Expense expense);
 }

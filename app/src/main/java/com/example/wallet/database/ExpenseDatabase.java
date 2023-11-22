@@ -9,9 +9,9 @@ import androidx.room.TypeConverters;
 
 import com.example.wallet.dao.ExpenseDao;
 import com.example.wallet.helper.LocalDateTimeConverter;
-import com.example.wallet.model.ExpenseModel;
+import com.example.wallet.model.Expense;
 
-@Database(entities = {ExpenseModel.class}, version = 1)
+@Database(entities = {Expense.class}, version = 1)
 @TypeConverters({LocalDateTimeConverter.class})
 public abstract class ExpenseDatabase extends RoomDatabase {
     public abstract ExpenseDao getExpenseDao();

@@ -20,7 +20,7 @@ import com.example.wallet.R;
 import com.example.wallet.helper.Helper;
 import com.example.wallet.helper.OnTextChangeListener;
 import com.example.wallet.helper.ViewModelFactory;
-import com.example.wallet.model.ExpenseModel;
+import com.example.wallet.model.Expense;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,7 +29,6 @@ import java.util.Calendar;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class NewExpenseActivity extends AppCompatActivity {
@@ -123,7 +122,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         String time = newExpenseViewModel.getEtTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy'T'HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(date+"T"+time, dateTimeFormatter);
-        ExpenseModel newExpense = new ExpenseModel(description, category, amount, localDateTime);
+        Expense newExpense = new Expense(description, category, amount, localDateTime);
 
         if (updateExpenseId == -1) {
             newExpenseViewModel.insertExpense(newExpense);

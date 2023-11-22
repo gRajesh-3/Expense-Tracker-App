@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wallet.R;
 import com.example.wallet.helper.OnItemClickListener;
-import com.example.wallet.model.ExpenseModel;
+import com.example.wallet.model.Expense;
 
 import java.util.List;
 
 import kotlin.Pair;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
-    List<Pair<String, List<ExpenseModel>>> sections;
+    List<Pair<String, List<Expense>>> sections;
     Context context;
-    private OnItemClickListener onItemClickListener;
+    private final OnItemClickListener onItemClickListener;
 
-    public TransactionAdapter(List<Pair<String, List<ExpenseModel>>> sections, Context context, OnItemClickListener onItemClickListener) {
+    public TransactionAdapter(List<Pair<String, List<Expense>>> sections, Context context, OnItemClickListener onItemClickListener) {
         this.sections = sections;
         this.context = context;
         this.onItemClickListener = onItemClickListener;
@@ -38,9 +38,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
-        Pair<String, List<ExpenseModel>> section = sections.get(position);
+        Pair<String, List<Expense>> section = sections.get(position);
         String sectionName = section.getFirst();
-        List<ExpenseModel> sectionExpenses = section.getSecond();
+        List<Expense> sectionExpenses = section.getSecond();
 
         holder.tvSectionHeader.setText(sectionName);
         holder.tvSectionPrice.setText(getSectionExpense(sectionExpenses));
@@ -53,7 +53,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         return sections.size();
     }
 
-    class TransactionViewHolder extends RecyclerView.ViewHolder {
+    static class TransactionViewHolder extends RecyclerView.ViewHolder {
         TextView tvSectionHeader;
         TextView tvSectionPrice;
         RecyclerView rvSection;
@@ -65,9 +65,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         }
     }
 
-    private String getSectionExpense(List<ExpenseModel> section) {
+    private String getSectionExpense(List<Expense> section) {
         Double expenseAmount = 0.0;
-        for (ExpenseModel expense: section) { expenseAmount += expense.getAmount(); }
+        for (Expense expense: section) { expenseAmount += expense.getAmount(); }
         return "₹"+expenseAmount;
     }
 }
