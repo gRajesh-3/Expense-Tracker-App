@@ -4,24 +4,13 @@
         <!-- Customize your dark theme here. -->
          <item name="colorPrimary">#ffffff</item>
          <item name="colorSecondary">@color/textGreyDark</item>
+        <item name="colorOnBackground">@color/darkGrey</item>
+        <item name="colorBackgroundFloating">@color/darkGreyBackground</item>
+        <item name="colorTertiary">@color/black</item>
     </style>
 
     <style name="SCREEN">
         <item name="android:background">@color/black</item>
     </style>
-    
-    <style name="SEARCHBAR">
-        <item name="android:background">@color/darkGrey</item>
-    </style>
-
-    <style name="LIST">
-        <item name="android:background">@color/darkGreyBackground</item>
-    </style>
 
 </resources>
-
-<!--
-    PAGE BACKGROUND - WHITE AND BLACK
-    SEARCH BAR BG - LIGHT AND DARK GREY
-    LIST BG - WHITE AND DARK GREY
--->

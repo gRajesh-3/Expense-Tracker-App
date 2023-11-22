@@ -4,7 +4,7 @@
     android:id="@+id/item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_border_light"
+    android:background="@drawable/rounded_border"
     android:layout_marginVertical="4dp"
     android:padding="@dimen/large_space">
 

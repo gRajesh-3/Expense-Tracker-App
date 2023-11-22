@@ -4,18 +4,13 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">#000000</item>
         <item name="colorSecondary">@color/textGrey</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorBackgroundFloating">@color/lightWhite</item>
+        <item name="colorTertiary">@color/lightWhite</item>
     </style>
 
     <style name="SCREEN">
-        <item name="android:background">@color/white</item>
-    </style>
-
-    <style name="SEARCHBAR">
-        <item name="android:background">@color/lightGrey</item>
-    </style>
-
-    <style name="LIST">
-        <item name="android:background">@color/lightGreyBackground</item>
+        <item name="android:background">@color/lightWhite</item>
     </style>
 
     <style name="Theme.Wallet" parent="Base.Theme.Wallet" />

@@ -1,79 +1,89 @@
 package com.example.wallet.view.expenses;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.wallet.dao.ExpenseDao;
-import com.example.wallet.database.ExpenseDatabase;
-import com.example.wallet.model.Expense;
+import com.example.wallet.model.BottomSheet;
 import com.example.wallet.model.ExpenseModel;
-import com.example.wallet.model.Section;
 import com.example.wallet.repository.ExpenseRepository;
+import com.example.wallet.view.adapter.TransactionAdapter;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.Pair;
 
 public class ExpensesViewModel extends ViewModel {
-    private ExpenseRepository expenseRepository;
-    private Flowable<List<ExpenseModel>> expenses;
-    private Flowable<List<Pair<String, List<ExpenseModel>>>> groupedExpenses;
-    private ExpenseDao expenseDao;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final ExpenseRepository expenseRepository;
+    private MutableLiveData<List<ExpenseModel>> expenses = new MutableLiveData<>();
+    public MutableLiveData<List<Pair<String, List<ExpenseModel>>>> filteredExpenses = new MutableLiveData<>();
+    private MutableLiveData<String> searchKey = new MutableLiveData<>("");
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public ExpensesViewModel(Context context) {
         expenseRepository = new ExpenseRepository(context);
+        getExpenses();
     }
 
-    public Flowable<List<ExpenseModel>> getAllExpenses() {
-        return expenseRepository.getAllExpenses();
+    public String getSearchKey() {
+        return searchKey.getValue();
+    }
+
+    public void setSearchKey(String key) {
+        searchKey.setValue(key);
+        filterExpenses();
+    }
+
+    public void getExpenses() {
+        Disposable disposable =expenseRepository.getAllExpenses()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(sections -> {
+                expenses.setValue(sections);
+                filterExpenses();
+            }, throwable -> System.out.println("onError" + throwable.getMessage()));
+
+        compositeDisposable.add(disposable);
+    }
+
+    private void filterExpenses() {
+        List<ExpenseModel> newExpenses = expenses.getValue();
+        if (!Objects.equals(searchKey.getValue(), "")) {
+            newExpenses = newExpenses.stream()
+                    .filter(obj -> obj.getDescription().toLowerCase().contains(searchKey.getValue().toLowerCase()) ||
+                            obj.getCategory().toLowerCase().contains(searchKey.getValue().toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+        filteredExpenses.setValue(convertToSections(newExpenses));
     }
 
     public Flowable<Double> getTotalExpense() { return expenseRepository.getTotalExpense(); }
 
-    public void insertExpense(ExpenseModel expense) {
-        expenseRepository.insertExpense(expense);
-    }
-
-    public void updateExpense(ExpenseModel expense) {
-        expenseRepository.updateExpense(expense);
-    }
-
     public void deleteExpense(ExpenseModel expense) {
         expenseRepository.deleteExpense(expense);
-    }
-
-    public ExpenseModel getExpense(int id, String sectionName, List<Pair<String, List<ExpenseModel>>> data) {
-        List<ExpenseModel> sectionExpenses = null;
-        for(Pair<String, List<ExpenseModel>> sec: data) {
-            if (sec.getFirst().equals(sectionName)) {
-                sectionExpenses = sec.getSecond();
-            }
-        }
-        ExpenseModel expense = null;
-        for (ExpenseModel exp: sectionExpenses) {
-            if (exp.getId() == id) {
-                expense = exp;
-            }
-        }
-        return expense;
     }
 
     public List<Pair<String, List<ExpenseModel>>> convertToSections(List<ExpenseModel> expenses) {
@@ -106,7 +116,7 @@ public class ExpensesViewModel extends ViewModel {
                 sections.add(new Pair<>(date, expenseList));
             }
         }
-        sections.sort((Comparator<Pair<String, List<ExpenseModel>>>) (o1, o2) -> {
+        sections.sort((o1, o2) -> {
             try {
                 Date date1 = dateFormat.parse(o1.getFirst());
                 Date date2 = dateFormat.parse(o2.getFirst());

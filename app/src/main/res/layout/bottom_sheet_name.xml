@@ -24,7 +24,7 @@
         android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/textfield_background"
+        android:background="@drawable/namefield_background"
         android:hint="Enter your name"
         android:padding="@dimen/large_space"
         android:singleLine="true"

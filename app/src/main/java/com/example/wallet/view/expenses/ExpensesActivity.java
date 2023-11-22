@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,10 +31,13 @@ import com.example.wallet.model.ExpenseModel;
 import com.example.wallet.view.adapter.TransactionAdapter;
 import com.example.wallet.view.newexpense.NewExpenseActivity;
 
+import java.util.List;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import kotlin.Pair;
 
 public class ExpensesActivity extends AppCompatActivity {
     private final String TAG = "My ExpenseActivity";
@@ -71,23 +75,18 @@ public class ExpensesActivity extends AppCompatActivity {
         });
         ibSearchIcon.setOnClickListener(v -> showBottomSheet(BottomSheet.SEARCH));
 
-        Disposable disposable1 = expensesViewModel.getTotalExpense()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(amount -> tvExpenseAmount.setText("₹"+amount));
-        compositeDisposable.add(disposable1);
-        Disposable disposable2 = expensesViewModel.getAllExpenses()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map(expenses -> expensesViewModel.convertToSections(expenses))
-            .subscribe(sections -> {
-                TransactionAdapter transactionAdapter = new TransactionAdapter(sections, this, (expense) -> {
-                    this.tappedExpense = expense;
-                    showBottomSheet(BottomSheet.INFO);
-                });
-                rvTransaction.setAdapter(transactionAdapter);
-            }, throwable -> System.out.println("onError" + throwable.getMessage()));
-        compositeDisposable.add(disposable2);
+        Disposable disposable = expensesViewModel.getTotalExpense()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(amount -> tvExpenseAmount.setText("₹"+amount));
+        compositeDisposable.add(disposable);
+        expensesViewModel.filteredExpenses.observe(this, sections -> {
+            TransactionAdapter transactionAdapter = new TransactionAdapter(sections, this, (expense) -> {
+                this.tappedExpense = expense;
+                showBottomSheet(BottomSheet.INFO);
+            });
+            rvTransaction.setAdapter(transactionAdapter);
+        });
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left);
     }
 
@@ -145,14 +144,16 @@ public class ExpensesActivity extends AppCompatActivity {
                         d.dismiss();
                     });
                 }
-
                 break;
             case SEARCH:
                 dialog = getDialog(R.layout.bottom_sheet_search);
                 EditText etFilter = dialog.findViewById(R.id.etFilter);
                 Button btnFilter = dialog.findViewById(R.id.btnFilter);
+                etFilter.setText(expensesViewModel.getSearchKey());
+                d = dialog;
                 btnFilter.setOnClickListener(v -> {
-//                    Log.i(TAG, svFilter.);
+                    expensesViewModel.setSearchKey(String.valueOf(etFilter.getText()));
+                    d.dismiss();
                 });
                 break;
         }
@@ -171,14 +172,12 @@ public class ExpensesActivity extends AppCompatActivity {
         backdrop.setLayoutParams(
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         );
-
         return backdrop;
     }
 
     private void addToRootView(View view, Dialog dialog) {
         ViewGroup rootView = findViewById(android.R.id.content);
         rootView.addView(view);
-
         dialog.setOnDismissListener(dialog1 -> rootView.removeView(view));
     }
 
@@ -186,12 +185,10 @@ public class ExpensesActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(layout);
-
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
-
         return dialog;
     }
 
@@ -200,14 +197,4 @@ public class ExpensesActivity extends AppCompatActivity {
         super.onDestroy();
         compositeDisposable.clear();
     }
-
-    // TODO
-    /*
-    1. Name feature
-        4. Add swipe-able feature *
-        9. Add filter expenses by search
-
-        -> create two
-    */
-
 }
